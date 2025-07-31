@@ -4,14 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^7.0.4"
+    "vite": "^7.0.4",
+    "vite-plugin-string": "^1.2.3"
   },
   "dependencies": {
+    "sass": "^1.89.2",
     "vite-plugin-handlebars": "^2.0.0"
   }
 }

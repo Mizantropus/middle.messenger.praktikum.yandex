@@ -1,24 +1,28 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import { Navigation } from './pages/navigation';
+import { SignIn } from './pages/sign-in';
+import { SignUp } from './pages/sign-up';
+import { Chats } from './pages/chats';
+import { Profile } from './pages/profile';
+import { Page404 } from './pages/404';
+import { Page500 } from './pages/500';
+import componentButton from "./components/button";
+import componentMainMenu from "./components/main_menu";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+componentButton();
+componentMainMenu();
 
-setupCounter(document.querySelector('#counter'))
+document.addEventListener('DOMContentLoaded', () => {
+  const app = document.querySelector('#app');
+  const getPage = () => {
+    switch (window.location.pathname) {
+      case '/': return Navigation();
+      case '/sign-in': return SignIn();
+      case '/sign-up': return SignUp();
+      case '/profile': return Profile();
+      case '/chats': return Chats();
+      case '/500': return Page500();
+      default: return Page404();
+    }
+  }
+  app.innerHTML = getPage();
+});
