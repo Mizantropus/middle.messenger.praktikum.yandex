@@ -4,7 +4,7 @@
 Учебный проект в рамках курса Middle front-end раазраболтчик на Яндекс Практикуме
 
 ###  Netlify
-Ссылка: https://dynamic-smakager-a6d4a4.netlify.app
+Ссылка: https://sparkling-rabanadas-ef7b5a.netlify.app/
 
 ### Дизайн
 Макеты подготовлены в [Figma](https://www.figma.com/design/Z9AhYD2iAaDfpWYGL5Ncmw/Untitled?node-id=0-1&t=VzblydA6ifCUTbGJ-1)
