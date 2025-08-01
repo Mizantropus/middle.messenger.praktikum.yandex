@@ -1,0 +1,56 @@
+@use "./styles/normalize";
+@use "./styles/mixins";
+@use "./styles/variables";
+  
+body
+  font-family: 'Roboto', sans-serif
+
+#app
+  min-height: 100%
+
+.wrapper_auth
+  @include mixins.center_top
+  min-height: 100vh
+  position: relative
+
+.wrapper_error
+  @include mixins.center
+  min-height: 100vh
+  position: relative
+  flex-wrap: wrap
+
+  div
+    text-align: center
+    padding-bottom: 50px
+
+    h1
+      font-size: 10em
+      font-weight: 200
+      width: 100%
+
+    h2
+      font-size: 2em
+      width: 100%
+      font-weight: 300
+      margin-bottom: 20px
+  
+.white_center_block
+  @include mixins.white_center_block
+  margin-top: 10vh
+  border-radius: 10px
+  box-shadow: 0 2px 5px 0 variables.$box-shadow
+  
+.white_center_block_no_shadow
+  @include mixins.white_center_block
+  padding: 25px 30px 35px
+  margin-top: 20px
+
+hr
+  display: block
+  width: 90%
+  height: 1px
+  background-color: variables.$ava-gray
+  margin: 0 5%
+  padding: 0
+  border: 0
+  outline: none
