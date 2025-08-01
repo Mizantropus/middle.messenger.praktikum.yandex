@@ -1,0 +1,52 @@
+<div class="wrapper_auth">
+  <a class="back-to-the-main" href="/">Вернуться на главную</a>
+
+  <div class="white_center_block_no_shadow">
+
+    <div class="pic_preview_wrap">
+      <div class="pic_preview"></div>
+     <input type="hidden" name="avatar" value="{{ avatar }}" />
+    </div>
+
+    <h2>{{ display_name }}</h2>
+
+    <form class="profile_form_base">
+
+      <label for="first_name">Имя</label>
+      <input type="text" name="first_name" value="{{ first_name }}" />
+
+      <label for="second_name">Фамилия</label>
+      <input type="text" name="second_name" value="{{ second_name }}" />
+
+      <label for="display_name">Отображаемое имя</label>
+      <input type="text" name="display_name" value="{{ display_name }}" />
+
+      <label for="login">Логин</label>
+      <input type="text" name="login" value="{{ login }}" />
+
+      <label for="email">E-mail</label>
+      <input type="text" name="email" value="{{ email }}" />
+
+      <label for="phone">Телефон</label>
+      <input type="text" name="phone" value="{{ phone }}" />
+
+      {{> button text="Сохранить" }}
+    
+    </form>
+
+    <hr />
+
+    <form class="profile_form_password">
+    
+      <label for="oldPassword">Старый пароль</label>
+      <input type="password" name="oldPassword" />
+
+      <label for="newPassword">Новый пароль</label>
+      <input type="password" name="newPassword" />
+
+      {{> button text="Сохранить пароль" }}
+      
+    </form>
+
+  </div>
+</div>
