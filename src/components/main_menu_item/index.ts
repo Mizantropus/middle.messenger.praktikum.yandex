@@ -1,8 +1,8 @@
-import Block from "../../core/block";
+import { AnyProps, Block } from "../../core/block";
 import template from './template.hbs';
 
 export default class MenuItem extends Block {
-  constructor(props) {
+  constructor(props: AnyProps) {
     super("li", props);
   }
   render(): DocumentFragment {

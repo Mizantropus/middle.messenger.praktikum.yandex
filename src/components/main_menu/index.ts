@@ -1,9 +1,9 @@
-import Block from "../../core/block";
+import { AnyProps, Block } from "../../core/block";
 import template from './template.hbs';
 
 export default class MainMenu extends Block {
-  constructor(props) {
-    super("main", props);
+  constructor(props: AnyProps, classname: string) {
+    super("div", props, classname);
   }
   render(): DocumentFragment {
     return this.compile(template, {

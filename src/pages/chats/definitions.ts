@@ -1,11 +1,11 @@
-import Block from "../../core/block";
+import { AnyProps, Block } from "../../core/block";
 import template from "./template.hbs";
 import template_left_col from "./left_col.hbs";
 import template_right_col from "./right_col.hbs";
 
 
 export class LeftCol extends Block { 
-  constructor(props, classname) {
+  constructor(props: AnyProps, classname: string) {
     super("div", props, classname);
   }
   render(): DocumentFragment {
@@ -17,7 +17,7 @@ export class LeftCol extends Block {
 }
 
 export class RightCol extends Block {
-  constructor(props, classname) {
+  constructor(props: AnyProps, classname: string) {
     super("div", props, classname);
   }
   render(): DocumentFragment {
@@ -32,7 +32,7 @@ export class RightCol extends Block {
 }
 
 export class Page extends Block {
-  constructor(props) {
+  constructor(props: AnyProps) {
     super("div", props);
   }
   render(): DocumentFragment {

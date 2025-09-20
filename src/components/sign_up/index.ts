@@ -1,16 +1,20 @@
 import { AnyProps, Block } from "../../core/block";
 import template from './template.hbs';
 
-export default class Input extends Block {
+
+export default class Form extends Block {
   constructor(props: AnyProps) {
-    super("div", props);
+    super("form", props);
   }
   render(): DocumentFragment {
     return this.compile(template, {
-      title: this.props.title,
       name: this.props.name,
-      type: this.props.type,
-      value: this.props.value,
+      surname: this.props.surname,
+      login: this.props.login,
+      email: this.props.email,
+      phone: this.props.phone,
+      password: this.props.password,
+      button: this.props.button,
       events: this.props.events
     });
   }

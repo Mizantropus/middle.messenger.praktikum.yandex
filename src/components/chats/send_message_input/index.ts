@@ -1,8 +1,8 @@
-import Block from "../../../core/block";
+import { AnyProps, Block } from "../../../core/block";
 import template from './template.hbs';
 
 export default class MessageInput extends Block {
-  constructor(props, classname) {
+  constructor(props: AnyProps, classname: string) {
     super("div", props, classname);
   }
   render(): DocumentFragment {

@@ -9,16 +9,16 @@ const METHODS: Record<HTTPMethod, HTTPMethod> = {
 
 interface RequestOptions {
   method?: HTTPMethod;
-  data?: Record<string, any>;
+  data?: Record<string, undefined>;
   headers?: Record<string, string>;
   timeout?: number;
 }
 
-function queryStringify(data: Record<string, any> = {}): string {
+function queryStringify(data: Record<string, undefined> = {}): string {
   const keys = Object.keys(data);
   if (!keys.length) return '';
   const query = keys
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(String(data[key]))}`)
     .join('&');
   return `?${query}`;
 }

@@ -5,7 +5,7 @@ import { Chats } from "./pages/chats";
 import { Profile } from "./pages/profile";
 import { Page404 } from "./pages/404";
 import { Page500 } from "./pages/500";
-import Block from "./core/block";
+import { Block } from "./core/block";
 import render from "./core/render";
 
 const routes: Record<string, Block> = {

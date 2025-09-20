@@ -1,4 +1,4 @@
-import Block from "../../core/block";
+import { Block } from "../../core/block";
 import { ChatData, MessageType } from "./types";
 import { 
   getFormattedDate,
@@ -12,8 +12,9 @@ import Friend from "../../components/chats/friend";
 import Message from "../../components/chats/message";
 import MessageButton from "../../components/chats/send_message_button";
 import MessageInput from "../../components/chats/send_message_input";
+import Form from "../../components/chats/send_message_form";
 import "./style.scss";
-import { 
+import {
   on_change_input_checker,
   validateMessage
 } from "../../core/validation"
@@ -25,15 +26,16 @@ let first_letter: string = "";
 let message_value: string = "";
 let is_valid_message: boolean = false;
 
-
-let change_message_input = function (event: InputEvent): void {
-  const target = event.target as HTMLInputElement;
-  message_value = target.value;
-  if (on_change_input_checker(target, validateMessage, true)) {
-    is_valid_message = true;
-  } else {
-    is_valid_message = false;
-    console.log("Сообщение не должно быть пустым");
+let change_message_input = function (event: Event): void {
+  if (event instanceof FocusEvent) {
+    const target = event.target as HTMLInputElement;
+    message_value = target.value;
+    if (on_change_input_checker(target, validateMessage, true)) {
+      is_valid_message = true;
+    } else {
+      is_valid_message = false;
+      console.log("Сообщение не должно быть пустым");
+    }
   }
 }
 
@@ -57,12 +59,9 @@ let message_handler = function(): void {
   }
 }
 
-let send_message = function (): void {
-  message_handler();
-}
-
-let send_message_by_enter = function (event: KeyboardEvent) {
-  if (event.key === 'Enter') {
+function validate_and_submit(event: Event): void {
+  event.preventDefault();
+  if (event instanceof SubmitEvent) {
     message_handler();
   }
 }
@@ -83,8 +82,8 @@ let generate_messages_list = function (messages_in: MessageType[]): Message[] {
   return messages;
 }
 
-let change_current_chat = function (event: InputEvent): void {
-  if (event) {
+let change_current_chat = function (event: Event): void {
+  if (event instanceof MouseEvent) {
     const target = event.currentTarget as HTMLElement;
     const inner = target.querySelector('[data-friend-id]') as HTMLElement;
     if (inner) {
@@ -107,9 +106,7 @@ let send_message_input: Block = new MessageInput({
   value: "",
   placeholder: "Сообщение",
   events: {
-    change: change_message_input,
-    keydown: send_message_by_enter,
-    keyup: change_message_input
+    "blur": change_message_input,
   }
 }, "send_message_input")
 
@@ -119,9 +116,6 @@ let send_message_attach: Block = new MessageButton({
 
 let send_message_button: Block = new MessageButton({
   image: "/images/send_chat.svg",
-  events: {
-    click: send_message
-  }
 }, "send_message_send")
 
 const search_input: Block = new SearchInput({
@@ -154,15 +148,22 @@ for (let thread of chat_data) {
   counter++;
 }
 
+const message_form: Form = new Form({
+  send_message_attach: send_message_attach,
+  send_message_input: send_message_input,
+  send_message_button: send_message_button,
+  events: {
+    "submit": validate_and_submit
+  }
+}, "right_col_send_message")
+
 const left_col: Block = new LeftCol({
   search_input: search_input,
   list: friends
 }, "chats_left_col")
 
 const right_col: Block = new RightCol({
-  send_message_attach: send_message_attach,
-  send_message_input: send_message_input,
-  send_message_button: send_message_button,
+  send_message_form: message_form,
   letter: first_letter,
   list: messages_to_render
 }, "chats_right_col")

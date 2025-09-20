@@ -15,7 +15,7 @@ header {
   }
 }
 
-main {
+.main {
   @include mixins.center;
 
   width: 100%;

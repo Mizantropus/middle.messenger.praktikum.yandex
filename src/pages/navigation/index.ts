@@ -1,4 +1,4 @@
-import Block from "../../core/block";
+import { AnyProps, Block } from "../../core/block";
 import Header from "../../components/header";
 import MainMenu from "../../components/main_menu";
 import MenuItem from "../../components/main_menu_item";
@@ -7,8 +7,8 @@ import './style.scss';
 
 
 export default class Page extends Block {
-  constructor(props) {
-    super("div", props);
+  constructor(props: AnyProps) {
+    super("main", props);
   }
   render(): DocumentFragment {
     return this.compile(template, {
@@ -45,7 +45,7 @@ const header: Block = new Header({
 const main_menu: Block = new MainMenu({
   header: "Навигация",
   list: main_menu_items
-})
+}, "main")
 
 export const Navigation: Page = new Page({
   header: header,
