@@ -1,0 +1,44 @@
+<div class="wrapper_auth">
+  <a class="back-to-the-main" href="/">Вернуться на главную</a>
+
+  <div class="white_center_block_no_shadow">
+
+    <div class="pic_preview_wrap">
+      <div class="pic_preview"></div>
+     <input type="hidden" name="avatar" value="{{ avatar }}" />
+    </div>
+
+    <h2>{{ display_name_value }}</h2>
+
+    <form class="profile_form_base">
+
+      {{{ name }}}
+
+      {{{ name_input }}}
+
+      {{{ display_name }}}
+
+      {{{ login }}}
+
+      {{{ email }}}
+
+      {{{ phone }}}
+
+      {{{ button_save_profile }}}
+    
+    </form>
+
+    <hr />
+
+    <form class="profile_form_password">
+    
+      {{{ old_password }}}
+
+      {{{ new_password }}}
+
+      {{{ button_save_password }}}
+      
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,26 @@
+@use "../../styles/variables";
+@use "../../styles/mixins";
+
+.pic_preview_wrap {
+  @include mixins.center;
+
+  .pic_preview {
+    width: 150px;
+    height: 150px;
+    border-radius: 80px;
+    background-color: variables.$ava-gray;
+    background-image: url("../../assets/images/picture.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50px;
+    margin-bottom: 15px;
+  }
+}
+
+.profile_form_base {
+  margin-bottom: 40px;
+}
+
+.profile_form_password {
+  margin-top: 30px;
+}

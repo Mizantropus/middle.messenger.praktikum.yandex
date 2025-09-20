@@ -25,3 +25,10 @@ npm run start
 - [Настройки профиля](https://sparkling-rabanadas-ef7b5a.netlify.app/profile)
 - [Страница 404](https://sparkling-rabanadas-ef7b5a.netlify.app/404)
 - [Страница 500](https://sparkling-rabanadas-ef7b5a.netlify.app/500)
+
+### Использованные технологии
+- typescript — основной язык
+- vite — сборщик
+- handlebars — шаблонизатор
+- eslint — линтер для ts
+- stylelint — линтер для scss

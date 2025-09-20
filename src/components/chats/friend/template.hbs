@@ -1,0 +1,15 @@
+<div class="chats_list_item_ava" data-friend-id="{{ id }}">{{ letter }}</div>
+<div class="chats_list_item_name_date_preview">
+  <div class="chats_list_item_name">
+    <span>{{ name }}</span>
+  </div>
+  <div class="chats_list_item_date">
+    <span>{{ last_time }}</span>
+  </div>
+  <div class="chats_list_item_preview">
+    <span>{{ last_message }}</span>
+  </div>
+  {{#if unread}}
+  <div class="chats_list_item_unread">{{ unread }}</div>
+  {{/if}}
+</div>
