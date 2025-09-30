@@ -1,5 +1,5 @@
 {
-  "name": "sprint_1_chats",
+  "name": "sprint_2_chats",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,15 +8,31 @@
   },
   "scripts": {
     "start": "vite build && vite preview --port 3000",
+    "prebuild": "tsc --noEmit",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint:styles": "stylelint '**/*.{scss,css}'",
+    "eslint": "eslint \"src/**/*.[jt]s\"",
+    "lint": "npm run prebuild && npm run lint:styles && npm run eslint"
   },
   "devDependencies": {
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
+    "eslint": "^9.34.0",
+    "stylelint": "^16.24.0",
+    "stylelint-config-standard-scss": "^16.0.0",
+    "stylelint-scss": "^6.12.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.0",
     "vite": "^7.0.4",
     "vite-plugin-string": "^1.2.3"
   },
   "dependencies": {
     "sass": "^1.89.2",
+    "uuid": "^13.0.0",
+    "vite-plugin-checker": "^0.10.3",
     "vite-plugin-handlebars": "^2.0.0"
   }
 }
