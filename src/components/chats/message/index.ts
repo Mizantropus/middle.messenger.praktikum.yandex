@@ -5,7 +5,7 @@ export default class Message extends Block {
   constructor(props: AnyProps) {
     super("div", props);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       m_class: this.props.m_class,
       text: this.props.text,

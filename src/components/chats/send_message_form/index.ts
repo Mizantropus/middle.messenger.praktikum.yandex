@@ -6,7 +6,7 @@ export default class Form extends Block {
   constructor(props: AnyProps, classname: string) {
     super("form", props, classname);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       send_message_attach: this.props.send_message_attach,
       send_message_input: this.props.send_message_input,

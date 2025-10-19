@@ -1,3 +1,4 @@
+import SignUpController from "../../api/controllers/sign-up";
 import { AnyProps, Block } from "../../core/block";
 import Input from "../../components/input";
 import Button from "../../components/button";
@@ -111,7 +112,7 @@ function validate_and_submit(event: Event): void {
       is_valid_phone &&
       is_valid_email
     ) {
-      console.log({
+      console.debug({
         login: login_value,
         password: password_value,
         first_name: first_name_value,
@@ -119,8 +120,17 @@ function validate_and_submit(event: Event): void {
         email: email_value,
         phone: phone_value
       })
+      let signUpController = new SignUpController();
+      signUpController.login({
+        login: login_value,
+        password: password_value,
+        first_name: first_name_value,
+        second_name: second_name_value,
+        email: email_value,
+        phone: phone_value
+      });
     } else {
-      console.log("Проверьте значения полей");
+      console.error("Проверьте значения полей");
     }
   }
 }
@@ -129,7 +139,7 @@ class Page extends Block {
   constructor(props: AnyProps) {
     super("div", props);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       header: this.props.header,
       form: this.props.form

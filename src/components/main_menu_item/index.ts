@@ -2,10 +2,10 @@ import { AnyProps, Block } from "../../core/block";
 import template from './template.hbs';
 
 export default class MenuItem extends Block {
-  constructor(props: AnyProps) {
-    super("li", props);
+  constructor(props: AnyProps, classname: string) {
+    super("li", props, classname);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       title: this.props.title,
       name: this.props.name,

@@ -5,7 +5,7 @@ export default class Button extends Block {
   constructor(props: AnyProps) {
     super("div", props);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       text: this.props.text,
       type: this.props.type,

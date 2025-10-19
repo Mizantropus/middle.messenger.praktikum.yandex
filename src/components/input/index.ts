@@ -5,12 +5,13 @@ export default class Input extends Block {
   constructor(props: AnyProps) {
     super("div", props);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       title: this.props.title,
       name: this.props.name,
       type: this.props.type,
       value: this.props.value,
+      accept: this.props.accept,
       events: this.props.events
     });
   }

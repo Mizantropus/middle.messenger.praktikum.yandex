@@ -5,7 +5,7 @@ export default class Header extends Block {
   constructor(props: AnyProps) {
     super("header", props);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       title: this.props.title
     });

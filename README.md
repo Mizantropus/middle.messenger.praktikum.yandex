@@ -1,7 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/240312b3-1002-42dd-87b6-da38f1fafbc8/deploy-status)](https://app.netlify.com/projects/sparkling-rabanadas-ef7b5a/deploys)
 
 # Мессенджер
-Учебный проект в рамках курса Middle front-end раазраболтчик на Яндекс Практикуме
+Учебный проект в рамках курса Middle front-end раазработчик на Яндекс Практикуме
 
 ###  Netlify
 Ссылка: https://sparkling-rabanadas-ef7b5a.netlify.app/
@@ -14,7 +14,7 @@
 npm install
 ```
 ```bash
-npm run start
+npm run dev
 ```
 
 ### Ссылки на свёрстанные страницы

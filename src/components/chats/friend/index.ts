@@ -5,7 +5,7 @@ export default class Friend extends Block {
   constructor(props: AnyProps, classname: string) {
     super("div", props, classname);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       name: this.props.name,
       last_time: this.props.last_time,

@@ -6,7 +6,7 @@ export default class Form extends Block {
   constructor(props: AnyProps) {
     super("form", props);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       login: this.props.login,
       password: this.props.password,

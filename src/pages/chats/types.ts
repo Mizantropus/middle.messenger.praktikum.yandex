@@ -1,15 +1,17 @@
 export interface MessageType {
   type: string;
-  text: string;
-  datetime: string;
+  user_id: number;
+  content: string;
+  time: string;
 }
-interface ChatThread {
-  name: string;
-  last_time: string;
-  last_message: string;
-  letter: string;
-  unread: number;
+
+export interface StateUserModel {
+  avatar: string | null;
+  display_name: string | null;
+  email: string | null;
+  first_name: string | null;
   id: number;
-  messages: MessageType[];
+  login: string;
+  phone: string | null;
+  second_name: string | null;
 }
-export type ChatData = ChatThread[];

@@ -1,26 +1,48 @@
-import { Navigation } from "./pages/navigation";
-import { SignIn } from "./pages/sign-in";
-import { SignUp } from "./pages/sign-up";
-import { Chats } from "./pages/chats";
-import { Profile } from "./pages/profile";
-import { Page404 } from "./pages/404";
-import { Page500 } from "./pages/500";
+import { SimpleCookie } from "./core/cookies";
+import ProfileController from "./api/controllers/profile";
+import store from "./store";
 import { Block } from "./core/block";
-import render from "./core/render";
+import Router from "./core/router"
 
-const routes: Record<string, Block> = {
-  "/": Navigation,
-  "/sign-in": SignIn,
-  "/sign-up": SignUp,
-  "/profile": Profile,
-  "/chats": Chats,
-  "/500": Page500,
-  "/404": Page404
-};
+export const router = new Router("#app");
 
-document.addEventListener("DOMContentLoaded", (): void => {
-  const getPage = (): Block => {
-    return routes[window.location.pathname] ?? Page404;
-  };
-  render("#app", getPage());
+router
+  .use("/", async () => {
+    const module = await import("./pages/navigation");
+    return module.Navigation;
+  })
+  .use("/sign-in", async () => {
+    const module = await import("./pages/sign-in");
+    return module.SignIn;
+  })
+  .use("/sign-up", async () => {
+    const module = await import("./pages/sign-up");
+    return module.SignUp;
+  })
+  .use("/profile", async () => {
+    const module = await import("./pages/profile");
+    return module.Profile as Block<any>;
+  }, true)
+  .use("/chats", async () => {
+    const module = await import("./pages/chats");
+    return module.Chats;
+  }, true)
+  .use("/500", async () => {
+    const module = await import("./pages/500");
+    return module.Page500;
+  })
+  .use("/404", async () => {
+    const module = await import("./pages/404");
+    return module.Page404;
+  }).start();
+
+document.addEventListener('DOMContentLoaded', async () => {
+  let state = store.getState();
+  let simpleCookie = new SimpleCookie();
+  let is_auth = simpleCookie.get("is_auth");
+  if (!state.user && is_auth) {
+    let profileController = new ProfileController();
+    let user_data = await profileController.get_user();
+    store.set('user', user_data);
+  }
 });

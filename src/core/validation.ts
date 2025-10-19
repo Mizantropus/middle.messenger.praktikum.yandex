@@ -33,6 +33,20 @@ export function validateFullName(fullName: string): boolean {
   return fullNameRegex.test(fullName.trim());
 }
 
+export function validateAvatar(file: File): boolean {
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+  const maxSize = 5 * 1024 * 1024;
+  if (!allowedTypes.includes(file.type)) {
+    alert('Разрешены только изображения: JPEG, PNG, GIF, WEBP');
+    return false;
+  }
+  if (file.size > maxSize) {
+    alert('Размер файла не должен превышать 2 МБ');
+    return false;
+  }
+  return true;
+}
+
 
 export function on_change_input_checker (
   target: HTMLInputElement,
