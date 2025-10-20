@@ -1,16 +1,17 @@
-import { fetchWithRetry, RequestOptions, HTTPMethod } from '../core/ajax';
+import { fetchWithRetry, RequestOptions, HTTPMethod, METHODS } from '../core/ajax';
+import { YANDEX_DOMAIN } from '../core/constants';
 import { BaseAPI } from './base-api';
 import { SignUpFormModel } from './types';
 
 
 export default class SignUpAPI extends BaseAPI<XMLHttpRequest, RequestOptions<SignUpFormModel>> {
   public create(data: RequestOptions<SignUpFormModel>): Promise<XMLHttpRequest> {
-    let method: HTTPMethod = 'POST';
+    let method: HTTPMethod = METHODS.POST;
     if (data.method) {
       method = data.method;
     }
     return fetchWithRetry(
-      "https://ya-praktikum.tech/api/v2/auth/signup",
+      `${YANDEX_DOMAIN}/auth/signup`,
       method,
       data
     );

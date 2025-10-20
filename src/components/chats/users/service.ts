@@ -7,6 +7,7 @@ import ChatsController from "../../../api/controllers/chat";
 import { UserToDel } from "./definitions";
 import { delete_users } from "./";
 import { change_current_chat, left_col } from "../../../pages/chats";
+import { StateChatUserModel, StateChatModel } from "../../../pages/chats/types";
 import Friend from "../friend";
 
 
@@ -25,7 +26,7 @@ export function change_login_input(event: Event): void {
 function isChatsSearchObject(value: unknown): value is {
   searching_login: string;
   current_chat_id: number;
-  users: [any];
+  users: [StateChatUserModel];
 } {
   return (
     typeof value === 'object' &&
@@ -39,8 +40,8 @@ function isChatsSearchObject(value: unknown): value is {
 
 function isChatsObject(value: unknown): value is {
   current_chat_id: number;
-  users: [any];
-  list: [any];
+  users: [StateChatUserModel];
+  list: [StateChatModel];
 } {
   return (
     typeof value === 'object' &&
@@ -113,6 +114,8 @@ export async function delete_this_user(event: Event) {
         await controller.deleteUserFromChat({
           users: [userId],
           chatId: state.chats.current_chat_id
+        }).catch((error) => {
+          console.error("Ошибка обращения к серверу:", error);
         });
         let users = state.chats.users;
         const filtered_users = users.filter(item => item.id !== userId);
@@ -134,7 +137,7 @@ export function generate_delete_users(): UserToDel[] {
   let user_list = [];
   function isChatsObject(value: unknown): value is {
     current_chat_id: number;
-    users: [any];
+    users: [StateChatUserModel];
   } {
     return (
       typeof value === 'object' &&
@@ -175,14 +178,17 @@ export async function search_and_invite_user(event: Event) {
         const controller = new ChatsController();
         const searching_user = await controller.searchUser({
           login: state.chats.searching_login
+        }).catch((error) => {
+          console.error("Ошибка обращения к серверу:", error);
         });
         if (searching_user.length) {
           const invited_user = searching_user[0];
           await controller.inviteUserToChat({
             users: [invited_user.id],
             chatId: state.chats.current_chat_id
-          })
-
+          }).catch((error) => {
+            console.error("Ошибка обращения к серверу:", error);
+          });
           let users = state.chats.users;
           users.push(invited_user);
           store.set("chats.users", users);
@@ -200,7 +206,9 @@ export async function delete_chat() {
     if (isChatsObject(state.chats)) {
       const chat_id: number = state.chats.current_chat_id;
       const controller = new ChatsController();
-      await controller.deleteChat(chat_id);
+      await controller.deleteChat(chat_id).catch((error) => {
+        console.error("Ошибка обращения к серверу:", error);
+      });
       let chats = state.chats.list;
       const chat_list = chats.filter(item => item.id !== chat_id);
       store.set("chats.list", chat_list);

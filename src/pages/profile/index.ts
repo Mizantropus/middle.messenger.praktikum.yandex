@@ -8,6 +8,7 @@ import connect from "../../api/service";
 import ProfileController from "../../api/controllers/profile";
 import template from "./template.hbs";
 import { Indexed } from "../../core/service/set";
+import { isUserObject } from "./service";
 import "./style.scss";
 import { 
   on_change_input_checker,
@@ -148,29 +149,6 @@ function click_on_preview_ava (event: Event): void {
   }
 }
 
-function isUserObject(value: unknown): value is {
-  login: string;
-  first_name: string;
-  second_name: string;
-  email: string;
-  display_name: string;
-  phone: string;
-  id: number;
-} {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    !Array.isArray(value) &&
-    'login' in value &&
-    'first_name' in value &&
-    'second_name' in value &&
-    'email' in value &&
-    'display_name' in value &&
-    'phone' in value &&
-    'id' in value
-  );
-}
-
 function validate_and_submit(event: Event): void {
   event.preventDefault();
   if (event instanceof SubmitEvent) {
@@ -200,6 +178,8 @@ function validate_and_submit(event: Event): void {
           second_name: state.user.second_name,
           email: state.user.email,
           phone: state.user.phone
+        }).catch((error) => {
+          console.error("Ошибка обращения к серверу:", error);
         });
 
       } else {
@@ -226,6 +206,8 @@ function validate_and_submit_passwords(event: Event): void {
       profileController.change_password({
         oldPassword: password_value,
         newPassword: new_password_value
+      }).catch((error) => {
+        console.error("Ошибка обращения к серверу:", error);
       });
     } else {
       console.debug("Проверьте значения полей");
@@ -259,7 +241,9 @@ function validate_and_submit_avatar(event: Event): void {
     const formData = new FormData();
     formData.append('avatar', avatar_file_value);
     let profileController = new ProfileController();
-    profileController.save_avatar(formData);
+    profileController.save_avatar(formData).catch((error) => {
+      console.error("Ошибка обращения к серверу:", error);
+    });
   }
 }
 

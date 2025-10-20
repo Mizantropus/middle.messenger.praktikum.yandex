@@ -128,6 +128,8 @@ function validate_and_submit(event: Event): void {
         second_name: second_name_value,
         email: email_value,
         phone: phone_value
+      }).catch((error) => {
+        console.error("Ошибка обращения к серверу:", error);
       });
     } else {
       console.error("Проверьте значения полей");

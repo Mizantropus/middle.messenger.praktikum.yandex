@@ -130,7 +130,9 @@ let generate_message_from_socket = function (message: MessageType): Message {
 
 let get_chat_by_id = async function(id: number | null, letter: string) {
   if (id) {
-    const users = await new ChatsController().getChatUsers(id);
+    const users = await new ChatsController().getChatUsers(id).catch((error) => {
+      console.error("Ошибка обращения к серверу:", error);
+    });
     store.set("chats.users", users);
     store.set("chats.current_chat_id", id);
     right_col.setProps({letter: letter});
@@ -138,7 +140,9 @@ let get_chat_by_id = async function(id: number | null, letter: string) {
 }
 
 let get_socket_token = async function(chat_id: number): Promise<string> {
-  const data: Record<string, string> = await new ChatsController().getChatToken(chat_id);
+  const data: Record<string, string> = await new ChatsController().getChatToken(chat_id).catch((error) => {
+    console.error("Ошибка обращения к серверу:", error);
+  });
   store.set("chats.token", data.token);
   return data.token;
 }
@@ -169,7 +173,9 @@ let add_chat_handler = async function (event: Event) {
     const chatTitle = prompt("Введите название нового чата:");
     if (chatTitle && chatTitle.trim().length > 0) {
       try {
-        const newChat = await new ChatsController().createChat(chatTitle.trim());
+        const newChat = await new ChatsController().createChat(chatTitle.trim()).catch((error) => {
+          console.error("Ошибка обращения к серверу:", error);
+        });
         const friend = new Friend({
           name: chatTitle,
           last_time: getFormattedDate(null),
@@ -292,7 +298,9 @@ async function connect_chat_socket(user_id: number, chat_id: number): Promise<Ch
 
 async function loadChatsOnPageInit() {
   try {
-    const chats = await new ChatsController().getChats();
+    const chats = await new ChatsController().getChats().catch((error) => {
+      console.error("Ошибка обращения к серверу:", error);
+    });
     store.set("chats.list", chats);
     let first_chat_id: number | null = null;
     let first_chat_letter: string = "";

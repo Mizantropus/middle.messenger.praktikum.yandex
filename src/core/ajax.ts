@@ -2,7 +2,7 @@ export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type HTTPMethodSmall = 'get' | 'post' | 'put' | 'delete';
 type dataRequestValue = string | number | null | boolean | undefined;
 
-const METHODS: Record<HTTPMethod, HTTPMethod> = {
+export const METHODS: Record<HTTPMethod, HTTPMethod> = {
   GET: 'GET',
   POST: 'POST',
   PUT: 'PUT',

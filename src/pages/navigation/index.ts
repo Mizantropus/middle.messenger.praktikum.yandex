@@ -1,4 +1,5 @@
 import { AnyProps, Block } from "../../core/block";
+import { RouteAddresses, RouteNames } from "../../core/routes";
 import Header from "../../components/header";
 import MainMenu from "../../components/main_menu";
 import MenuItem from "../../components/main_menu_item";
@@ -12,7 +13,9 @@ let log_out = async function (event: Event) {
     event.stopPropagation();
     event.preventDefault();
     let signInController = new SignInController();
-    await signInController.logout();
+    await signInController.logout().catch((error) => {
+      console.error("Ошибка обращения к серверу:", error);
+    });
   }
 }
 
@@ -29,14 +32,14 @@ export default class Page extends Block {
 }
 
 const main_menu_dict: string[][] = [
-  ["Навигация", "/"],
-  ["Вход", "/sign-in"],
-  ["Регистрация", "/sign-up"],
-  ["Чаты", "/chats"],
-  ["Настройки профиля", "/profile"],
-  ["Страница 404", "/404"],
-  ["Страница 500", "/500"],
-  ["Выйти", "/"]
+  [RouteNames.Navigation, RouteAddresses.Navigation],
+  [RouteNames.SignIn, RouteAddresses.SignIn],
+  [RouteNames.SignUp, RouteAddresses.SignUp],
+  [RouteNames.Messenger, RouteAddresses.Messenger],
+  [RouteNames.Settings, RouteAddresses.Settings],
+  [RouteNames.Error404, RouteAddresses.Error404],
+  [RouteNames.Error500, RouteAddresses.Error500],
+  [RouteNames.Exit, RouteAddresses.SignIn]
 ]
 
 const main_menu_items: Block[] = [];

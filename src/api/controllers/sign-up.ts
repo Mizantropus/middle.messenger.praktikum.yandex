@@ -6,7 +6,11 @@ import { validateLogin, validatePassword } from "../../core/validation"
 
 const signUpAPI = new SignUpAPI();
 
-function validate (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function validate (
+  _target: typeof SignUpController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function(data: SignUpFormModel) {
     if (!validateLogin(data.login) || !validatePassword(data.password)) {
@@ -16,7 +20,11 @@ function validate (_target: any, _propertyKey: string, descriptor: PropertyDescr
   }
 }
 
-function handleError (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function handleError (
+  _target: typeof SignUpController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function(data: SignUpFormModel) {
     try {

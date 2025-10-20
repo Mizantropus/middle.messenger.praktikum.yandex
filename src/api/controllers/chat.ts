@@ -7,7 +7,11 @@ function validateChatTitle(title: string): boolean {
   return typeof title === 'string' && title.trim().length > 0;
 }
 
-function validate(_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function validate(
+  _target: typeof ChatsController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function(title: string) {
     if (!validateChatTitle(title)) {
@@ -17,7 +21,11 @@ function validate(_target: any, _propertyKey: string, descriptor: PropertyDescri
   }
 }
 
-function validate_search_user(_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function validate_search_user(
+  _target: typeof ChatsController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function(data: SearchUserModel) {
     if (!validateLogin(data.login)) {
@@ -27,9 +35,13 @@ function validate_search_user(_target: any, _propertyKey: string, descriptor: Pr
   }
 }
 
-function handleError(_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function handleError(
+  _target: typeof ChatsController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
-  descriptor.value = async function(...args: any[]) {
+  descriptor.value = async function(...args: undefined[]) {
     try {
       return await originalMethod.apply(this, args);
     } catch (error) {

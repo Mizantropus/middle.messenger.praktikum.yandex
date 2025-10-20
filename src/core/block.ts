@@ -2,6 +2,7 @@ import { v4 as makeUUID } from "uuid";
 import Handlebars from "handlebars";
 import EventBus from "./mediator";
 import { Indexed } from "./service/set";
+import isEqual from "./service/isEqual";
 
 
 type ChildAsProps = Record<string, Block<any>>;
@@ -127,19 +128,15 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
     this.eventBus.emit(Block.EVENTS.FLOW_CDM);
   }
 
-  private _componentDidUpdate(oldProps: Props, newProps: Props): void {
-    const response = this.componentDidUpdate(oldProps, newProps);
-    if (!response) {
-      return;
-    }
-    this._render(false);
-  }
+  protected componentDidUpdate(): void {}
 
-  protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+  private async _componentDidUpdate(oldProps: AnyProps | unknown, newProps: AnyProps | unknown): Promise<void> {
     if (oldProps && newProps) {
-      return true;
+      if (!isEqual(oldProps, newProps)) {
+        await this._render(false);
+        this.componentDidUpdate();
+      }
     }
-    return true;
   }
 
   public setProps(nextProps: Partial<Props>): void {
@@ -312,7 +309,7 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
         }
       }
     }
-
+    this.dispatchComponentDidMount();
     return fragment.content;
   }
 }

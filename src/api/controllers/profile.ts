@@ -7,7 +7,6 @@ import {
   validateEmail,
   validatePhone,
   validatePassword,
-  validateFullName,
   validateAvatar
 } from "../../core/validation";
 import store from "../../store";
@@ -15,7 +14,11 @@ import store from "../../store";
 
 const profileAPI = new ProfileAPI();
 
-function handleErrorSaveUser (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function handleErrorSaveUser (
+  _target: typeof ProfileController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function(data: ProfileFormModel) {
     try {
@@ -26,7 +29,11 @@ function handleErrorSaveUser (_target: any, _propertyKey: string, descriptor: Pr
   }
 }
 
-function handleErrorChangePassword (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function handleErrorChangePassword (
+  _target: typeof ProfileController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function(data: ProfilePasswordModel) {
     try {
@@ -37,7 +44,11 @@ function handleErrorChangePassword (_target: any, _propertyKey: string, descript
   }
 }
 
-function handleError (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function handleError (
+  _target: typeof ProfileController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function() {
     try {
@@ -48,7 +59,11 @@ function handleError (_target: any, _propertyKey: string, descriptor: PropertyDe
   }
 }
 
-function handleErrorSaveAvatar (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function handleErrorSaveAvatar (
+  _target: typeof ProfileController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function(data: FormData) {
     try {
@@ -59,7 +74,11 @@ function handleErrorSaveAvatar (_target: any, _propertyKey: string, descriptor: 
   }
 }
 
-function validate (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function validate (
+  _target: typeof ProfileController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function(data: ProfileFormModel) {
     if (
@@ -68,7 +87,7 @@ function validate (_target: any, _propertyKey: string, descriptor: PropertyDescr
         !validateName(data.second_name) ||
         !validateEmail(data.email) ||
         !validatePhone(data.phone) ||
-        !validateFullName(data.display_name)
+        !validateLogin(data.display_name)
     ) {
       throw new Error("Validation error");
     }
@@ -76,7 +95,11 @@ function validate (_target: any, _propertyKey: string, descriptor: PropertyDescr
   }
 }
 
-function validatePasswordDecorator (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function validatePasswordDecorator (
+  _target: typeof ProfileController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function(data: ProfilePasswordModel) {
     if (
@@ -89,10 +112,14 @@ function validatePasswordDecorator (_target: any, _propertyKey: string, descript
   }
 }
 
-function validateAvatarDecorator (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
+function validateAvatarDecorator (
+  _target: typeof ProfileController.prototype,
+  _propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   descriptor.value = function(data: FormData) {
-    let file: any = data.get('avatar');
+    let file: FormDataEntryValue  | null = data.get('avatar');
     if (file instanceof File) {
       if (
           !validateAvatar(file)

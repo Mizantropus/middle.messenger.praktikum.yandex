@@ -1,10 +1,9 @@
 import Route from "./route";
+import { RouteAddresses } from "./routes";
 import { Block } from "./block";
 import { SimpleCookie } from "./cookies";
 
-const SIGN_IN_PATH = "/sign-in";
-const CHATS_PATH = "/chats";
-const PATHNAMES_REDIRECTED = ["/sign-in", "/sign-up"];
+const PATHNAMES_REDIRECTED = [RouteAddresses.SignIn, RouteAddresses.SignUp];
 
 type BlockFactory = () => Promise<Block>;
 
@@ -28,19 +27,19 @@ export default class Router {
     Router.__instance = this;
   }
 
-  use(pathname: string, blockFactory: BlockFactory, need_auth: boolean = false): this {
+  use(pathname: RouteAddresses, blockFactory: BlockFactory, need_auth: boolean = false): this {
     this.routes.push({ pathname, blockFactory, need_auth });
     return this;
   }
 
   start(): void {
     window.onpopstate = (event: PopStateEvent) => {
-      this._onRoute((event.currentTarget as Window).location.pathname);
+      this._onRoute((event.currentTarget as Window).location.pathname as RouteAddresses);
     };
-    this._onRoute(window.location.pathname);
+    this._onRoute(window.location.pathname as RouteAddresses);
   }
 
-  private async _onRoute(pathname: string): Promise<void> {
+  private async _onRoute(pathname: RouteAddresses): Promise<void> {
     let routeConfig = this.getRouteConfig(pathname);
 
     if (!routeConfig) return;
@@ -49,10 +48,10 @@ export default class Router {
     let is_auth = simpleCookie.get("is_auth");
 
     if (routeConfig.need_auth && !is_auth) {
-      routeConfig = this.getRouteConfig(SIGN_IN_PATH);
+      routeConfig = this.getRouteConfig(RouteAddresses.SignIn);
       if (!routeConfig) return;
     } else if (is_auth && PATHNAMES_REDIRECTED.includes(pathname)) {
-      routeConfig = this.getRouteConfig(CHATS_PATH);
+      routeConfig = this.getRouteConfig(RouteAddresses.Messenger);
       if (!routeConfig) return;
     }
     if (this._currentRoute) {
@@ -63,7 +62,7 @@ export default class Router {
     this._currentRoute.render();
   }
 
-  go(pathname: string): void {
+  go(pathname: RouteAddresses): void {
     this.history.pushState({}, "", pathname);
     this._onRoute(pathname);
   }
@@ -76,7 +75,7 @@ export default class Router {
     window.history.forward();
   }
 
-  getRouteConfig(pathname: string) {
+  getRouteConfig(pathname: RouteAddresses) {
     return this.routes.find(route => route.pathname === pathname);
   }
 }

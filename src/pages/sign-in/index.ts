@@ -49,7 +49,9 @@ function validate_and_submit(event: Event): void {
       signInController.login({
         login: login_value,
         password: password_value
-      })
+      }).catch((error) => {
+        console.error("Ошибка обращения к серверу:", error);
+      });
     } else {
       console.debug("Проверьте значения логина и/или пароля");
     }

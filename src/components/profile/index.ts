@@ -1,7 +1,8 @@
 import { AnyProps, Block } from "../../core/block";
+import { isUserObject } from "../../pages/profile/service";
 import template from './template.hbs';
 import template_ava from './template_ava.hbs';
-import connect from "../../api/service"
+import connect from "../../api/service";
 
 
 class FormProfile extends Block {
@@ -39,6 +40,31 @@ class FormAvatar extends Block {
       input: this.props.input,
       events: this.props.events
     });
+  }
+
+  private updatePreviewFromProps(): void {
+    const preview = document.getElementById("preview") as HTMLDivElement | null;
+    if (preview) {
+      let avatarUrl: string | null = "";
+      const user = this.props.user;
+      if (user && isUserObject(user)) {
+        avatarUrl = user.avatar;
+      }
+      if (!avatarUrl && typeof this.props.avatar_url === "string") {
+        avatarUrl = this.props.avatar_url;
+      }
+      if (avatarUrl) {
+        preview.style.backgroundImage = `url("${avatarUrl}")`;
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.updatePreviewFromProps();
+  }
+
+  componentDidUpdate() {
+    this.updatePreviewFromProps();
   }
 }
 
