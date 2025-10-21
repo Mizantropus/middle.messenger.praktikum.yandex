@@ -1,37 +1,42 @@
-import { ChatData, MessageType } from "./types";
+import { StateUserModel } from "./types";
+import { isUserObject } from "../../components/chats/users/service";
+import store from "../../store";
+
 
 export let scroll_chat_to_bottom = function (): void {
-  const chat = document.getElementById('chat_body_field');
-  if (chat) {
-    chat.lastElementChild?.scrollIntoView({ behavior: 'auto' });
-  }
-}
-
-export let find_messages_by_id = function (id: number, data: ChatData): MessageType[] {
-  for (let thread of data) {
-    if (thread.id === id) {
-      return thread.messages;
+  let chat = document.getElementById("chat_body_field");
+  if (!chat) return;
+  const waitAndScroll = () => {
+    chat = document.getElementById("chat_body_field");
+    if (!chat) return;
+    if (chat.lastElementChild) {
+      chat.lastElementChild.scrollIntoView({ behavior: "auto" });
+    } else {
+      setTimeout(waitAndScroll, 150);
     }
-  }
-  throw new Error('Чата с указанным id не существует');
+  };
+  requestAnimationFrame(waitAndScroll);
 }
 
-export let find_letter_by_id = function (id: number, data: ChatData): string {
-  for (let thread of data) {
-    if (thread.id === id) {
-      return thread.letter;
-    }
+export function getFormattedDate(input: string | null): string {
+  let now = new Date();
+  if (input) {
+    now = new Date(input);
   }
-  throw new Error('Чата с указанным id не существует');
-}
-
-export function getFormattedDate(): string {
-  const now = new Date();
-  const pad = (n: number) => n.toString().padStart(2, '0');
+  const pad = (n: number) => n.toString().padStart(2, "0");
   const day = pad(now.getDate());
   const month = pad(now.getMonth() + 1);
   const year = now.getFullYear();
   const hours = pad(now.getHours());
   const minutes = pad(now.getMinutes());
   return `${day}-${month}-${year} ${hours}:${minutes}`;
+}
+
+export function get_current_user(): StateUserModel | undefined {
+  let state = store.getState();
+  if (state.user) {
+    if (isUserObject(state.user)) {
+      return state.user;
+    }
+  }
 }

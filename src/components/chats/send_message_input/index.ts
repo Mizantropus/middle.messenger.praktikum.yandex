@@ -5,7 +5,7 @@ export default class MessageInput extends Block {
   constructor(props: AnyProps, classname: string) {
     super("div", props, classname);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       type: this.props.type,
       name: this.props.name,

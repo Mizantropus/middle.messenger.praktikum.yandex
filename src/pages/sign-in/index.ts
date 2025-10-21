@@ -1,3 +1,4 @@
+import SignInController from "../../api/controllers/sign-in";
 import { AnyProps, Block } from "../../core/block";
 import Input from "../../components/input";
 import Button from "../../components/button";
@@ -44,12 +45,15 @@ function validate_and_submit(event: Event): void {
   event.preventDefault();
   if (event instanceof SubmitEvent) {
     if (is_valid_login && is_valid_password) {
-      console.log({
+      let signInController = new SignInController();
+      signInController.login({
         login: login_value,
-        password: password_value,
-      })
+        password: password_value
+      }).catch((error) => {
+        console.error("Ошибка обращения к серверу:", error);
+      });
     } else {
-      console.log("Проверьте значения логина и/или пароля");
+      console.debug("Проверьте значения логина и/или пароля");
     }
   }
 }
@@ -58,7 +62,7 @@ class Page extends Block {
   constructor(props: AnyProps) {
     super("div", props);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       header: this.props.header,
       form: this.props.form
@@ -66,7 +70,7 @@ class Page extends Block {
   }
 }
 
-const login_input: Block = new Input({
+const login_input: Input = new Input({
   title: "Логин",
   name: "login",
   type: "text",
@@ -75,7 +79,7 @@ const login_input: Block = new Input({
   }
 })
 
-const password_input: Block = new Input({
+const password_input: Input = new Input({
   title: "Пароль",
   name: "password",
   type: "password",
@@ -84,7 +88,7 @@ const password_input: Block = new Input({
   }
 })
 
-const submit_button: Block = new Button({
+const submit_button: Button = new Button({
   text: "Войти",
   type: "submit",
 })

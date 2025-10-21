@@ -6,7 +6,9 @@ export default class EventBus {
   listeners: Listeners;
 
   constructor() {
-    this.listeners = {};
+    this.listeners = {
+      'updated': [],
+    };
   }
 
   on(event: string, callback: Handler): void {

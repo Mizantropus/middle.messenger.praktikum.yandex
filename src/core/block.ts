@@ -1,6 +1,8 @@
 import { v4 as makeUUID } from "uuid";
 import Handlebars from "handlebars";
 import EventBus from "./mediator";
+import { Indexed } from "./service/set";
+import isEqual from "./service/isEqual";
 
 
 type ChildAsProps = Record<string, Block<any>>;
@@ -11,11 +13,13 @@ export type AnyProps = Partial<{
   _id?: string;
   events?: EventsMap;
   list?: ChildrenList | string;
+  store?: Indexed;
 }> & Record<string, unknown>;
 
 export abstract class Block<Props extends AnyProps = AnyProps> {
   static EVENTS = {
     INIT: 'init',
+    UPDATED: 'updated',
     FLOW_CDM: "flow:component-did-mount",
     FLOW_CDU: "flow:component-did-update",
     FLOW_RENDER: 'flow:render',
@@ -29,6 +33,7 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
   protected events: EventsMap;
   protected children?: ChildAsProps;
   protected children_list?: ChildrenList;
+  protected store?: Indexed;
   protected eventBus: EventBus;
 
   constructor(
@@ -123,19 +128,15 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
     this.eventBus.emit(Block.EVENTS.FLOW_CDM);
   }
 
-  private _componentDidUpdate(oldProps: Props, newProps: Props): void {
-    const response = this.componentDidUpdate(oldProps, newProps);
-    if (!response) {
-      return;
-    }
-    this._render(false);
-  }
+  protected componentDidUpdate(): void {}
 
-  protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+  private async _componentDidUpdate(oldProps: AnyProps | unknown, newProps: AnyProps | unknown): Promise<void> {
     if (oldProps && newProps) {
-      return true;
+      if (!isEqual(oldProps, newProps)) {
+        await this._render(false);
+        this.componentDidUpdate();
+      }
     }
-    return true;
   }
 
   public setProps(nextProps: Partial<Props>): void {
@@ -143,6 +144,10 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
       return;
     }
     Object.assign(this.props, nextProps);
+  }
+
+  public getProps(): Props {
+    return this.props;
   }
 
   public updateChildren(key: string, new_children: Block<any>): void {
@@ -159,10 +164,8 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
     if (!new_list) {
       return;
     }
-    if (this.children_list) {
-      this.children_list = new_list;
-      this._render(false);
-    }
+    this.children_list = new_list;
+    this._render(false);
   }
 
   get element(): HTMLElement {
@@ -189,17 +192,17 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
     });
   }
 
-  private _render(intial: boolean = true): void {
+  private async _render(intial: boolean = true) {
     if (!intial) {
       this._removeEvents();
     }
-    const block: DocumentFragment = this.render();
+    const block: DocumentFragment = await this.render();
     this._element.innerHTML = '';
     this._element.appendChild(block);
     this._addEvents();
   }
 
-  abstract render(): DocumentFragment;
+  abstract render(): Promise<DocumentFragment>;
 
   public getContent(): HTMLElement {
     return this.element;
@@ -241,9 +244,29 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
     this.getContent().style.display = "none";
   }
 
+  public kill(): void {
+    this._removeEvents();
+    if (this.children) {
+      Object.values(this.children).forEach((child) => {
+        child.kill();
+      });
+    }
+    if (this.children_list) {
+      for (const child of this.children_list) {
+        child.kill();
+      }
+    }
+    if (this._element && this._element.parentNode) {
+      this._element.parentNode.removeChild(this._element);
+    }
+    this.children = undefined;
+    this.children_list = undefined;
+    this.events = {};
+    this.props = {} as Props;
+  }
+
   protected compile(template: string, props: Props): DocumentFragment {
     const propsAndStubs: AnyProps = { ...props };
-
     if (this.children) {
       Object.entries(this.children).forEach(([key, child]) => {
         propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
@@ -251,6 +274,7 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
     }
 
     if (this.children_list && "list" in propsAndStubs) {
+      
       let list_str = "";
       for (let child_item of this.children_list) {
         list_str += `<div data-id="${child_item._id}"></div>`;
@@ -285,7 +309,7 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
         }
       }
     }
-
+    this.dispatchComponentDidMount();
     return fragment.content;
   }
 }

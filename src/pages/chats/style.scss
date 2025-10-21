@@ -73,6 +73,56 @@
     width: 265px;
     margin-left: 10px;
 
+    .add_chat_button{
+      width: 100%;
+      height: 60px;
+      position: relative;
+      margin-top: 20px;
+      cursor: pointer;
+
+      .add_chat_plus{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        &::after,
+        &::before {
+          @include mixins.before-after;
+
+          position: absolute;
+          background-color: variables.$ava-gray;
+          transition: background-color 0.3s ease;
+        }
+
+        &::after {
+          height: 10px;
+          width: 60px;
+          top: 50%;
+          margin-top: -5px;
+          left: 50%;
+          margin-left: -30px;
+        }
+
+        &::before {
+          height: 60px;
+          width: 10px;
+          top: 0;
+          left: 50%;
+          margin-left: -5px;
+        }
+
+        &:hover {
+          &::after,
+          &::before {
+            @include mixins.before-after;
+
+            position: absolute;
+            background-color: variables.$light-text;
+          }
+        }
+      }
+    }
+
     .chats_list_item {
       @include mixins.space-between-wrap;
 
@@ -222,6 +272,37 @@
             top: 8px;
           }
         }
+
+        .additional_chat_menu {
+          transition: all 0.3s ease;
+          position: absolute;
+          top: 10px;
+          right: -5px;
+          background-color: white;
+          width: 220px;
+          box-shadow: 0 0 7px 0 #00000042;
+          border-radius: 5px;
+          opacity: 0;
+          height: 0;
+          overflow: hidden;
+
+          .additional_chat_item {
+            height: 50px;
+            line-height: 50px;
+            padding: 0 10px;
+
+            &:hover {
+              background-color: variables.$ava-gray;
+            }
+          }
+        }
+
+        &:hover {
+          .additional_chat_menu {
+            height: 150px;
+            opacity: 1;
+          }
+        }
       }
     }
 
@@ -298,6 +379,7 @@
         border: 0;
         outline: 0;
         background: transparent;
+        margin-top: 0;
       }
     }
 
@@ -314,6 +396,7 @@
         border: 1px solid variables.$light-text;
         outline: none;
         font-size: 12px;
+        margin-bottom: 0;
         padding: 0 30px 0 4px;
       }
     }
@@ -328,6 +411,7 @@
       button {
         border: 0;
         outline: 0;
+        margin-top: 0;
         background: transparent;
       }
     }

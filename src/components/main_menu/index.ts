@@ -5,7 +5,7 @@ export default class MainMenu extends Block {
   constructor(props: AnyProps, classname: string) {
     super("div", props, classname);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       header: this.props.header,
       list: this.props.list

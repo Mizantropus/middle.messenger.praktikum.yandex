@@ -6,7 +6,7 @@ export default class FormPassword extends Block {
   constructor(props: AnyProps, classname: string) {
     super("form", props, classname);
   }
-  render(): DocumentFragment {
+  async render(): Promise<DocumentFragment> {
     return this.compile(template, {
       old_password: this.props.old_password,
       new_password: this.props.new_password,
