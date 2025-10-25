@@ -337,4 +337,6 @@ async function loadChatsOnPageInit() {
   }
 }
 
-await loadChatsOnPageInit();
+(async () => {
+  await loadChatsOnPageInit();
+})();

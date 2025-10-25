@@ -219,7 +219,13 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target: Props, prop: string, value: unknown) {
-        const oldProps = { ...target };
+        const oldProps = { ...target };        
+        if (prop === 'events') {
+          self.events = {};
+          if (value && typeof value === 'object') {
+            self._setCustomEvents(value as EventsMap);
+          }
+        }
         (target as any)[prop] = value;
         self.eventBus.emit(Block.EVENTS.FLOW_CDU, oldProps, target);
         return true;
@@ -266,7 +272,12 @@ export abstract class Block<Props extends AnyProps = AnyProps> {
   }
 
   protected compile(template: string, props: Props): DocumentFragment {
-    const propsAndStubs: AnyProps = { ...props };
+    const propsAndStubs: AnyProps = {};
+    Object.keys(props).forEach(key => {
+      if (key !== '_id') {
+        propsAndStubs[key] = props[key];
+      }
+    });
     if (this.children) {
       Object.entries(this.children).forEach(([key, child]) => {
         propsAndStubs[key] = `<div data-id="${child._id}"></div>`;

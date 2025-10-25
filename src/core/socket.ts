@@ -1,3 +1,5 @@
+import { YANDEX_WSS_DOMAIN } from "./constants";
+
 export default abstract class Socket {
 
   protected url: string;
@@ -5,7 +7,7 @@ export default abstract class Socket {
   private ping_interval: number | null = null;
 
   constructor(user_id: number, chat_id: number, token: string) {
-    this.url = `wss://ya-praktikum.tech/ws/chats/${user_id}/${chat_id}/${token}`;
+    this.url = `${YANDEX_WSS_DOMAIN}${user_id}/${chat_id}/${token}`;
     this._connect();
   }
 
