@@ -23,7 +23,7 @@ export interface RequestOptions<T = Record<string, dataRequestValue>> {
   timeout?: number;
 }
 
-function queryStringify(data: Record<string, dataRequestValue> = {}): string {
+export function queryStringify(data: Record<string, dataRequestValue> = {}): string {
   const keys = Object.keys(data);
   if (!keys.length) return '';
   const query = keys
